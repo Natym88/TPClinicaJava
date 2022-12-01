@@ -3,7 +3,7 @@ package org.camada3.entregableMoreiraNatalia.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class PacienteDto implements Serializable {
+public class PacienteDto implements Dto {
 
     private Integer id;
     private String nombre;

@@ -18,8 +18,11 @@ public class Paciente {
     @OneToOne( cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="domicilio_id", referencedColumnName = "id")
     private Domicilio domicilio;
+    @Column
     private int telefono;
+    @Column
     private int dni;
+    @Column(nullable = true)
     private LocalDate fechaAlta;
 
     public Paciente(){};

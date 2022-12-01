@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class OdontologoService implements IOdontologoService{
+public class OdontologoService implements IPersonaService<OdontologoDto> {
 
 
     private IOdontologoRepository odontologoRepository;
@@ -28,8 +28,15 @@ public class OdontologoService implements IOdontologoService{
 
 
     @Override
-    public void crear(OdontologoDto odontologo) {
-        guardar( odontologo );
+    public OdontologoDto crear(OdontologoDto odontologo) throws ServiceException {
+        Odontologo entidad = null;
+
+        if(!(String.valueOf(odontologo.getMatricula()).isBlank()))
+            guardar( odontologo );
+        else
+            throw new ServiceException("No se puede guardar un odontólogo sin matrícula");
+
+        return mapper.convertValue(entidad, OdontologoDto.class);
     }
 
     @Override
@@ -62,12 +69,12 @@ public class OdontologoService implements IOdontologoService{
 
     @Override
     public Set<OdontologoDto> buscarPorApellido(String apellido) {
-        /*Set<Odontologo> todosConApellido = odontologoRepository.buscarPorApellido(apellido);
+        Set<Odontologo> todosConApellido = odontologoRepository.buscarPorApellido(apellido);
         Set<OdontologoDto> resultado = new HashSet<>();
         for( Odontologo o: todosConApellido)
             resultado.add(mapper.convertValue(o, OdontologoDto.class));
-        return resultado;*/
-        return null;
+        return resultado;
+
     }
 
     private void guardar( OdontologoDto o){

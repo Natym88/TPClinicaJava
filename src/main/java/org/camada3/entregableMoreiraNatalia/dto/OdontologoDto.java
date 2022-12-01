@@ -2,7 +2,7 @@ package org.camada3.entregableMoreiraNatalia.dto;
 
 import java.io.Serializable;
 
-public class OdontologoDto implements Serializable {
+public class OdontologoDto implements Dto {
 
     private String nombre;
     private String apellido;

@@ -9,6 +9,6 @@ import java.util.Set;
 
 public interface IOdontologoRepository extends JpaRepository <Odontologo, Integer> {
 
-//    @Query("FROM odontologo o WHERE o.apellido LIKE %:apellido%")
-//    Set<Odontologo> buscarPorApellido (@Param("apellido") String apellido);
+    @Query(value = "SELECT * FROM odontologo o WHERE o.apellido LIKE %?1%", nativeQuery = true)
+    Set<Odontologo> buscarPorApellido ( String apellido);
 }

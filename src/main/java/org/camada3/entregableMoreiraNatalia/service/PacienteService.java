@@ -1,9 +1,10 @@
 package org.camada3.entregableMoreiraNatalia.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.camada3.entregableMoreiraNatalia.dto.OdontologoDto;
 import org.camada3.entregableMoreiraNatalia.dto.PacienteDto;
+import org.camada3.entregableMoreiraNatalia.entity.Odontologo;
 import org.camada3.entregableMoreiraNatalia.entity.Paciente;
-import org.camada3.entregableMoreiraNatalia.repository.IOdontologoRepository;
 import org.camada3.entregableMoreiraNatalia.repository.IPacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class PacienteService implements IPacienteService{
+public class PacienteService implements IPersonaService<PacienteDto>{
 
     private IPacienteRepository pacienteRepository;
     private ObjectMapper mapper;
@@ -27,8 +28,16 @@ public class PacienteService implements IPacienteService{
     }
 
     @Override
-    public void crear(PacienteDto paciente) {
-        guardar(paciente);
+    public PacienteDto crear(PacienteDto paciente) throws ServiceException {
+
+        Paciente entidad = null;
+
+        if(!(String.valueOf(paciente.getDni()).isBlank()))
+            guardar(paciente);
+        else
+            throw new ServiceException("No se puede guardar un paciente sin DNI");
+
+        return mapper.convertValue(entidad, PacienteDto.class);
     }
 
     @Override
