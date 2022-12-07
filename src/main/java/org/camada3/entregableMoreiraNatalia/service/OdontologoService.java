@@ -32,7 +32,7 @@ public class OdontologoService implements IPersonaService<OdontologoDto> {
         Odontologo entidad = null;
 
         if(!(String.valueOf(odontologo.getMatricula()).isBlank()))
-            guardar( odontologo );
+            entidad = guardar( odontologo );
         else
             throw new ServiceException("No se puede guardar un odontólogo sin matrícula");
 
@@ -40,12 +40,12 @@ public class OdontologoService implements IPersonaService<OdontologoDto> {
     }
 
     @Override
-    public OdontologoDto buscarPorId(Integer id) throws Exception{
+    public OdontologoDto buscarPorId(Integer id) throws ServiceException{
         Optional<Odontologo> encuentra = odontologoRepository.findById(id);
         if(encuentra.isPresent())
             return mapper.convertValue(encuentra, OdontologoDto.class);
         else
-            throw new Exception("No existe el odontólogo buscado");
+            throw new ServiceException("No existe el odontólogo buscado");
     }
 
     @Override
@@ -77,8 +77,8 @@ public class OdontologoService implements IPersonaService<OdontologoDto> {
 
     }
 
-    private void guardar( OdontologoDto o){
+    private Odontologo guardar( OdontologoDto o){
         Odontologo odontologo = mapper.convertValue(o, Odontologo.class);
-        odontologoRepository.save(odontologo);
+        return odontologoRepository.save(odontologo);
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+@RestController
 @RequestMapping("/pacientes")
 public class PacienteController {
     private PacienteService pacienteService;
@@ -20,8 +21,7 @@ public class PacienteController {
         ResponseEntity<Object> respuesta = null;
 
         try {
-            pacienteService.crear(paciente);
-            respuesta = ResponseEntity.ok(paciente);
+            respuesta = ResponseEntity.ok(pacienteService.crear(paciente));
         } catch (ServiceException e) {
             respuesta = ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -41,6 +41,7 @@ public class PacienteController {
 
     @GetMapping("/todos")
     public Collection<PacienteDto> listar(){
+
         return pacienteService.listar();
     }
 

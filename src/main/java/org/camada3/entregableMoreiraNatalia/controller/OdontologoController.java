@@ -28,8 +28,8 @@ public class OdontologoController {
         ResponseEntity<Object> respuesta = null;
 
         try {
-            service.crear(odontologo);
-            respuesta = ResponseEntity.ok(odontologo);
+
+            respuesta = ResponseEntity.ok(service.crear(odontologo));
         } catch (ServiceException e) {
             respuesta = ResponseEntity.badRequest().body(e.getMessage());
         }

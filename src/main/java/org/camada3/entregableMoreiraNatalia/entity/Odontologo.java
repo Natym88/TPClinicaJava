@@ -1,7 +1,8 @@
 package org.camada3.entregableMoreiraNatalia.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "odontologo")
@@ -16,6 +17,8 @@ public class Odontologo {
     private String apellido;
     @Column
     private String matricula;
+    @OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Turno> turnos = new ArrayList<>();
 
     public Odontologo() {
     }
@@ -52,5 +55,9 @@ public class Odontologo {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public List<Turno> getTurnos() {
+        return turnos;
     }
 }

@@ -1,6 +1,8 @@
 package org.camada3.entregableMoreiraNatalia.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class OdontologoDto implements Dto {
 
@@ -8,6 +10,7 @@ public class OdontologoDto implements Dto {
     private String apellido;
     private Integer id;
     private int matricula;
+    private ArrayList<TurnoDto> turnos = new ArrayList<>();
 
     public OdontologoDto (){}
 
@@ -58,4 +61,9 @@ public class OdontologoDto implements Dto {
     public void setMatricula(int matricula) {
         this.matricula = matricula;
     }
+
+    public Collection<TurnoDto> getTurnos() {
+        return turnos;
+    }
+
 }

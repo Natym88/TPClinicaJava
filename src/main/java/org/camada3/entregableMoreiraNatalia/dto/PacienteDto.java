@@ -15,14 +15,6 @@ public class PacienteDto implements Dto {
 
     public PacienteDto() {}
 
-    public PacienteDto(String nombre, String apellido, DomicilioDto domicilio, int telefono, int dni) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.domicilio = domicilio;
-        this.telefono = telefono;
-        this.dni = dni;
-    }
-
     @Override
     public String toString(){
         return "Paciente: " + nombre + " " + apellido +
@@ -81,9 +73,5 @@ public class PacienteDto implements Dto {
 
     public Integer getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

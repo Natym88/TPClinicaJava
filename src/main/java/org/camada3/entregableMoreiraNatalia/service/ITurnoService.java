@@ -1,13 +1,16 @@
 package org.camada3.entregableMoreiraNatalia.service;
 
+import org.camada3.entregableMoreiraNatalia.dto.PedirTurnoDto;
 import org.camada3.entregableMoreiraNatalia.dto.TurnoDto;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
-public interface ITurnoService {
+public interface ITurnoService<TurnoDto> {
 
-    void guardar(TurnoDto turno);
+    TurnoDto guardar(PedirTurnoDto turno) throws Exception;
     void eliminar (Integer id);
     Collection<TurnoDto> buscarPorOdontologo(String apellidoOdontologo);
     Collection<TurnoDto> buscarPorPaciente(String apellidoPaciente);

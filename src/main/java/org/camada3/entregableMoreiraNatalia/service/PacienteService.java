@@ -9,6 +9,7 @@ import org.camada3.entregableMoreiraNatalia.repository.IPacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -32,8 +33,9 @@ public class PacienteService implements IPersonaService<PacienteDto>{
 
         Paciente entidad = null;
 
-        if(!(String.valueOf(paciente.getDni()).isBlank()))
-            guardar(paciente);
+        if(!(String.valueOf(paciente.getDni()).isBlank())){
+            paciente.setFechaAlta(LocalDate.now());
+            entidad = guardar(paciente);}
         else
             throw new ServiceException("No se puede guardar un paciente sin DNI");
 
@@ -41,12 +43,12 @@ public class PacienteService implements IPersonaService<PacienteDto>{
     }
 
     @Override
-    public PacienteDto buscarPorId(Integer id) throws Exception {
+    public PacienteDto buscarPorId(Integer id) throws ServiceException {
         Optional<Paciente> encuentra = pacienteRepository.findById(id);
         if(encuentra.isPresent())
             return mapper.convertValue(encuentra, PacienteDto.class);
         else
-            throw new Exception ("No existe el paciente buscado");
+            throw new ServiceException ("No existe el paciente buscado");
     }
 
     @Override
@@ -73,8 +75,8 @@ public class PacienteService implements IPersonaService<PacienteDto>{
         return null;
     }
 
-    private void guardar( PacienteDto paciente){
+    private Paciente guardar( PacienteDto paciente){
         Paciente paciente1 = mapper.convertValue(paciente, Paciente.class);
-        pacienteRepository.save(paciente1);
+        return pacienteRepository.save(paciente1);
     }
 }
