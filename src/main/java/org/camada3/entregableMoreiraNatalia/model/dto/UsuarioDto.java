@@ -1,6 +1,4 @@
-package org.camada3.entregableMoreiraNatalia.dto;
-
-import java.io.Serializable;
+package org.camada3.entregableMoreiraNatalia.model.dto;
 
 public class UsuarioDto implements Dto {
 

@@ -1,4 +1,4 @@
-package org.camada3.entregableMoreiraNatalia.dto;
+package org.camada3.entregableMoreiraNatalia.model.dto;
 
 import java.io.Serializable;
 

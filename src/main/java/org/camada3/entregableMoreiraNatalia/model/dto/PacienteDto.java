@@ -1,7 +1,10 @@
-package org.camada3.entregableMoreiraNatalia.dto;
+package org.camada3.entregableMoreiraNatalia.model.dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDate;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class PacienteDto implements Dto {
 
@@ -16,11 +19,16 @@ public class PacienteDto implements Dto {
     public PacienteDto() {}
 
     @Override
-    public String toString(){
-        return "Paciente: " + nombre + " " + apellido +
-                " DNI: " + dni +
-                " Domicilio: " + domicilio.toString() +
-                " Tel: " + telefono;
+    public String toString() {
+        return "PacienteDto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", domicilio=" + domicilio +
+                ", telefono=" + telefono +
+                ", dni=" + dni +
+                ", fechaAlta=" + fechaAlta +
+                '}';
     }
 
     public String getNombre() {

@@ -1,11 +1,10 @@
 package org.camada3.entregableMoreiraNatalia.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.camada3.entregableMoreiraNatalia.dto.OdontologoDto;
-import org.camada3.entregableMoreiraNatalia.dto.PacienteDto;
-import org.camada3.entregableMoreiraNatalia.entity.Odontologo;
-import org.camada3.entregableMoreiraNatalia.entity.Paciente;
-import org.camada3.entregableMoreiraNatalia.repository.IPacienteRepository;
+import org.camada3.entregableMoreiraNatalia.configuration.MapperConfig;
+import org.camada3.entregableMoreiraNatalia.exceptions.ServiceException;
+import org.camada3.entregableMoreiraNatalia.model.dto.PacienteDto;
+import org.camada3.entregableMoreiraNatalia.persistence.entity.Paciente;
+import org.camada3.entregableMoreiraNatalia.persistence.repository.IPacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,10 +15,10 @@ import java.util.*;
 public class PacienteService implements IPersonaService<PacienteDto>{
 
     private IPacienteRepository pacienteRepository;
-    private ObjectMapper mapper;
+    private MapperConfig mapper;
 
     @Autowired
-    public void setObjectMapper ( ObjectMapper mapper){
+    public void setObjectMapper ( MapperConfig mapper){
         this.mapper = mapper;
     }
 
@@ -39,14 +38,14 @@ public class PacienteService implements IPersonaService<PacienteDto>{
         else
             throw new ServiceException("No se puede guardar un paciente sin DNI");
 
-        return mapper.convertValue(entidad, PacienteDto.class);
+        return mapper.objectMapper().convertValue(entidad, PacienteDto.class);
     }
 
     @Override
     public PacienteDto buscarPorId(Integer id) throws ServiceException {
         Optional<Paciente> encuentra = pacienteRepository.findById(id);
         if(encuentra.isPresent())
-            return mapper.convertValue(encuentra, PacienteDto.class);
+            return mapper.objectMapper().convertValue(encuentra.get(), PacienteDto.class);
         else
             throw new ServiceException ("No existe el paciente buscado");
     }
@@ -66,7 +65,7 @@ public class PacienteService implements IPersonaService<PacienteDto>{
         List<Paciente> pacientes = pacienteRepository.findAll();
         Set<PacienteDto> resultado = new HashSet<>();
         for(Paciente p: pacientes)
-            resultado.add(mapper.convertValue(p,PacienteDto.class));
+            resultado.add(mapper.objectMapper().convertValue(p,PacienteDto.class));
         return resultado;
     }
 
@@ -76,7 +75,7 @@ public class PacienteService implements IPersonaService<PacienteDto>{
     }
 
     private Paciente guardar( PacienteDto paciente){
-        Paciente paciente1 = mapper.convertValue(paciente, Paciente.class);
+        Paciente paciente1 = mapper.objectMapper().convertValue(paciente, Paciente.class);
         return pacienteRepository.save(paciente1);
     }
 }

@@ -1,6 +1,7 @@
 package org.camada3.entregableMoreiraNatalia.service;
 
-import org.camada3.entregableMoreiraNatalia.dto.Dto;
+import org.camada3.entregableMoreiraNatalia.exceptions.ServiceException;
+import org.camada3.entregableMoreiraNatalia.model.dto.Dto;
 
 import java.util.Collection;
 import java.util.Set;

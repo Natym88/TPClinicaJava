@@ -1,4 +1,4 @@
-package org.camada3.entregableMoreiraNatalia.entity;
+package org.camada3.entregableMoreiraNatalia.persistence.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -8,14 +8,14 @@ import java.time.LocalDate;
 public class Turno {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.SEQUENCE)
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column
     private LocalDate fecha;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn( name="paciente_id")
     private Paciente paciente;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn( name="odontologo_id")
     private Odontologo odontologo;
 

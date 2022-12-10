@@ -1,9 +1,10 @@
 package org.camada3.entregableMoreiraNatalia.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.camada3.entregableMoreiraNatalia.dto.OdontologoDto;
-import org.camada3.entregableMoreiraNatalia.entity.Odontologo;
-import org.camada3.entregableMoreiraNatalia.repository.IOdontologoRepository;
+import org.camada3.entregableMoreiraNatalia.exceptions.ServiceException;
+import org.camada3.entregableMoreiraNatalia.model.dto.OdontologoDto;
+import org.camada3.entregableMoreiraNatalia.persistence.entity.Odontologo;
+import org.camada3.entregableMoreiraNatalia.persistence.repository.IOdontologoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class OdontologoService implements IPersonaService<OdontologoDto> {
     public OdontologoDto buscarPorId(Integer id) throws ServiceException{
         Optional<Odontologo> encuentra = odontologoRepository.findById(id);
         if(encuentra.isPresent())
-            return mapper.convertValue(encuentra, OdontologoDto.class);
+            return mapper.convertValue(encuentra.get(), OdontologoDto.class);
         else
             throw new ServiceException("No existe el odontólogo buscado");
     }

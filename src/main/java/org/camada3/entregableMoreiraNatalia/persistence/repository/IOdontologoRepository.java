@@ -1,9 +1,8 @@
-package org.camada3.entregableMoreiraNatalia.repository;
+package org.camada3.entregableMoreiraNatalia.persistence.repository;
 
-import org.camada3.entregableMoreiraNatalia.entity.Odontologo;
+import org.camada3.entregableMoreiraNatalia.persistence.entity.Odontologo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Set;
 

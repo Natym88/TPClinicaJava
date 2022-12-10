@@ -1,8 +1,8 @@
-package org.camada3.entregableMoreiraNatalia.dto;
+package org.camada3.entregableMoreiraNatalia.model.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class OdontologoDto implements Dto {
 
@@ -10,7 +10,7 @@ public class OdontologoDto implements Dto {
     private String apellido;
     private Integer id;
     private int matricula;
-    private ArrayList<TurnoDto> turnos = new ArrayList<>();
+
 
     public OdontologoDto (){}
 
@@ -21,11 +21,11 @@ public class OdontologoDto implements Dto {
     }
 
     @Override
-    public String toString(){
-        return "Odontologo{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
+    public String toString() {
+        return "OdontologoDto{" +
+                "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
+                ", id=" + id +
                 ", matricula=" + matricula +
                 '}';
     }
@@ -60,10 +60,6 @@ public class OdontologoDto implements Dto {
 
     public void setMatricula(int matricula) {
         this.matricula = matricula;
-    }
-
-    public Collection<TurnoDto> getTurnos() {
-        return turnos;
     }
 
 }

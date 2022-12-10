@@ -1,8 +1,8 @@
 package org.camada3.entregableMoreiraNatalia.controller;
 
-import org.camada3.entregableMoreiraNatalia.dto.OdontologoDto;
+import org.camada3.entregableMoreiraNatalia.model.dto.OdontologoDto;
 import org.camada3.entregableMoreiraNatalia.service.OdontologoService;
-import org.camada3.entregableMoreiraNatalia.service.ServiceException;
+import org.camada3.entregableMoreiraNatalia.exceptions.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,15 +24,11 @@ public class OdontologoController {
     }
 
     @PostMapping("/nuevo")
-    public ResponseEntity<Object> guardar(@RequestBody OdontologoDto odontologo){
+    public ResponseEntity<Object> guardar(@RequestBody OdontologoDto odontologo) throws Exception {
         ResponseEntity<Object> respuesta = null;
 
-        try {
-
             respuesta = ResponseEntity.ok(service.crear(odontologo));
-        } catch (ServiceException e) {
-            respuesta = ResponseEntity.badRequest().body(e.getMessage());
-        }
+
 
         return respuesta;
     }

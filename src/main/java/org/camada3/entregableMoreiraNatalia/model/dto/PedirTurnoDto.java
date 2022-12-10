@@ -1,6 +1,10 @@
-package org.camada3.entregableMoreiraNatalia.dto;
+package org.camada3.entregableMoreiraNatalia.model.dto;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.LocalDate;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class PedirTurnoDto implements Dto {
 

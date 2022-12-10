@@ -1,6 +1,8 @@
-package org.camada3.entregableMoreiraNatalia.dto;
+package org.camada3.entregableMoreiraNatalia.model.dto;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class DomicilioDto implements Dto {
 

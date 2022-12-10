@@ -1,16 +1,14 @@
 package org.camada3.entregableMoreiraNatalia.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.camada3.entregableMoreiraNatalia.dto.OdontologoDto;
-import org.camada3.entregableMoreiraNatalia.dto.PacienteDto;
-import org.camada3.entregableMoreiraNatalia.dto.PedirTurnoDto;
-import org.camada3.entregableMoreiraNatalia.dto.TurnoDto;
-import org.camada3.entregableMoreiraNatalia.entity.Odontologo;
-import org.camada3.entregableMoreiraNatalia.entity.Paciente;
-import org.camada3.entregableMoreiraNatalia.entity.Turno;
-import org.camada3.entregableMoreiraNatalia.repository.IOdontologoRepository;
-import org.camada3.entregableMoreiraNatalia.repository.IPacienteRepository;
-import org.camada3.entregableMoreiraNatalia.repository.ITurnoRepository;
+import org.camada3.entregableMoreiraNatalia.configuration.MapperConfig;
+import org.camada3.entregableMoreiraNatalia.exceptions.ServiceException;
+import org.camada3.entregableMoreiraNatalia.model.dto.TurnoDto;
+import org.camada3.entregableMoreiraNatalia.persistence.entity.Odontologo;
+import org.camada3.entregableMoreiraNatalia.persistence.entity.Paciente;
+import org.camada3.entregableMoreiraNatalia.persistence.entity.Turno;
+import org.camada3.entregableMoreiraNatalia.persistence.repository.IOdontologoRepository;
+import org.camada3.entregableMoreiraNatalia.persistence.repository.IPacienteRepository;
+import org.camada3.entregableMoreiraNatalia.persistence.repository.ITurnoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,59 +18,53 @@ import java.util.*;
 @Service
 public class TurnoService implements ITurnoService<TurnoDto>{
 
-    private PacienteService pacienteService;
-    private OdontologoService odontologoService;
+    private IPacienteRepository pacienteRepository;
+    private IOdontologoRepository odontologoRepository;
     private ITurnoRepository turnoRepository;
-    private ObjectMapper mapper;
+    private MapperConfig mapper;
     @Autowired
-    public void setPacienteService ( PacienteService service){
-        this.pacienteService = service;
+    public void setPacienteService ( IPacienteRepository repository){
+        this.pacienteRepository = repository;
     }
     @Autowired
-    public void setOdontologoService (OdontologoService service){
-        this.odontologoService = service;
+    public void setOdontologoService (IOdontologoRepository repository){
+        this.odontologoRepository = repository;
     }
     @Autowired
     public void setTurnoRepository (ITurnoRepository turnoRepository){
         this.turnoRepository = turnoRepository;
     }
     @Autowired
-    public void setMapper ( ObjectMapper mapper){
+    public void setMapper ( MapperConfig mapper){
         this.mapper = mapper;
     }
 
     @Override
-    public TurnoDto guardar(PedirTurnoDto turnoNuevo) throws ServiceException {
+    public TurnoDto guardar(TurnoDto turnoNuevo) throws ServiceException {
+        Optional<Paciente> paciente = pacienteRepository.findById(turnoNuevo.getPaciente().getId());
+        Optional<Odontologo> odontologo = odontologoRepository.findById(turnoNuevo.getOdontologo().getId());
+        if(!paciente.isPresent())
+            throw new ServiceException("No existe el paciente");
+        if(!odontologo.isPresent())
+            throw new ServiceException("No existe el odontologo");
+        if(turnoNuevo.getFecha().isBefore(LocalDate.now()) || turnoNuevo.getFecha().isEqual(LocalDate.now()))
+            throw new ServiceException("No se puede pedir un turno anterior a la fecha actual");
 
-        Turno entidad = null;
-        TurnoDto turno;
-        PacienteDto pacienteDto;
-        OdontologoDto odontologoDto;
-
-        if(!turnoNuevo.getFecha().isBefore(LocalDate.now())) {
-            try {
-                pacienteDto = pacienteService.buscarPorId(turnoNuevo.getPacienteId());
-                entidad.setPaciente(mapper.convertValue(pacienteDto, Paciente.class));
-            } catch (ServiceException e) {
-                throw new ServiceException(e.getMessage());
-            }
-            try {
-                odontologoDto = odontologoService.buscarPorId(turnoNuevo.getOdontologoId());
-                entidad.setOdontologo(mapper.convertValue(odontologoDto, Odontologo.class));
-            } catch (ServiceException e) {
-                throw new ServiceException(e.getMessage());
-            }
-
-            entidad.setFecha(turnoNuevo.getFecha());
-            Turno guardado = guardarInterno(entidad);
-            turno = mapper.convertValue(guardado,TurnoDto.class);
-            if(odontologoDto != null)
-                odontologoDto.getTurnos().add(turno);
-
-        } else
-            throw new ServiceException("No se puede crear un turno con fecha anterior al día de la fecha");
-
+        Turno entidad = mapper.objectMapper().convertValue(turnoNuevo, Turno.class);
+        turnoRepository.save(entidad);
+        entidad.setOdontologo(odontologo.get());
+        entidad.setPaciente(paciente.get());
+        TurnoDto turno = mapper.objectMapper().convertValue(entidad,TurnoDto.class);
         return turno;
+    }
+
+    @Override
+    public Collection<TurnoDto> listar(){
+        List<Turno> turnos = turnoRepository.findAll();
+        Collection<TurnoDto> resultado = new HashSet<>();
+        for(Turno t: turnos)
+            resultado.add(mapper.objectMapper().convertValue(t, TurnoDto.class));
+        return resultado;
     }
 
     @Override
@@ -82,15 +74,15 @@ public class TurnoService implements ITurnoService<TurnoDto>{
 
     @Override
     public Collection<TurnoDto> buscarPorOdontologo(String apellidoOdontologo) {
-        Set<OdontologoDto> odontologosEncontrados = odontologoService.buscarPorApellido(apellidoOdontologo);
+        /*Set<OdontologoDto> odontologosEncontrados = mapper.objectMapper().convertValue(odontologoRepository.buscarPorApellido(apellidoOdontologo), OdontologoDto.class);
         Set<TurnoDto> resultado = new HashSet<>();
         for(OdontologoDto o: odontologosEncontrados){
             List<Turno> turnos =turnoRepository.findAll();
             turnos.toArray();
-            turnos.stream().filter(turno -> turno.getOdontologo() == mapper.convertValue(o, Odontologo.class));
+            turnos.stream().filter(turno -> turno.getOdontologo() == mapper.objectMapper().convertValue(o, Odontologo.class));
 
 
-        }
+        }*/
         return null;
     }
 

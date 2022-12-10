@@ -1,4 +1,4 @@
-package org.camada3.entregableMoreiraNatalia.entity;
+package org.camada3.entregableMoreiraNatalia.persistence.entity;
 
 import javax.persistence.*;
 
@@ -18,14 +18,14 @@ public class Domicilio {
     private String ciudad;
     @Column
     private String cp;
-    @OneToOne(mappedBy = "domicilio", fetch = FetchType.LAZY)
-    private Paciente paciente;
 
     public Domicilio(){}
 
     public Integer getId() {
         return id;
     }
+
+    public void setId(Integer id){ this.id = id;}
 
     public String getCalle() {
         return calle;
@@ -67,11 +67,5 @@ public class Domicilio {
         this.cp = cp;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
-    }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
 }

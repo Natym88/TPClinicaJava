@@ -1,4 +1,4 @@
-package org.camada3.entregableMoreiraNatalia.entity;
+package org.camada3.entregableMoreiraNatalia.persistence.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 public class Odontologo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column
     private String nombre;
@@ -17,8 +17,8 @@ public class Odontologo {
     private String apellido;
     @Column
     private String matricula;
-    @OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Turno> turnos = new ArrayList<>();
+    /*@OneToMany(mappedBy = "odontologo", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Turno> turnos = new ArrayList<>();*/
 
     public Odontologo() {
     }
@@ -57,7 +57,5 @@ public class Odontologo {
         this.matricula = matricula;
     }
 
-    public List<Turno> getTurnos() {
-        return turnos;
-    }
+
 }

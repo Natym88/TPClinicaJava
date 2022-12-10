@@ -1,9 +1,7 @@
-package org.camada3.entregableMoreiraNatalia.entity;
+package org.camada3.entregableMoreiraNatalia.persistence.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -18,7 +16,7 @@ public class Paciente {
     @Column
     private String apellido;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="paciente_id", referencedColumnName = "id")
+    @JoinColumn(name="domicilio_id")
     private Domicilio domicilio;
     @Column
     private int telefono;
@@ -26,10 +24,14 @@ public class Paciente {
     private int dni;
     @Column(nullable = true)
     private LocalDate fechaAlta;
-    @OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Turno> turnos = new ArrayList<>();
+    /*@OneToMany(mappedBy = "paciente", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Turno> turnos = new ArrayList<>();*/
 
     public Paciente(){};
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
